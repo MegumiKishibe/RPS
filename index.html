@@ -163,41 +163,63 @@ if (btn.textContent.includes("グー")) {
 // じゃんけんCPU
 const cpuHand = Math.floor(Math.random() * 3);
 
+// グー=0, チョキ=1, パー=2
 // 勝敗判定
-if (plHand === cpuHand) {
-  result.textContent = "あいこ！";
-  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
-
-} else if (plHand === 0) { // プレイヤーがグー
-  if (cpuHand === 1) { // CPUがチョキ
+if (plHand === 0) {
+	if (cpuHand === 0) {
+		result.textContent ="あなた：グー　相手：グー　あいこ！";
+	} else if (cpuHand === 1){
     result.textContent = "あなた：グー　相手：チョキ　→あなたの勝ち！";
-  } else { // CPUがパー
+	} else {
     result.textContent = "あなた；グー　相手：パー　→あなたの負け！";
-  }
-  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+	}
+//if (plHand === cpuHand) {
+	//result.textContent = "あいこ！";
+	//console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+	//} else if (plHand === 0) { // プレイヤーがグー
+	//if (cpuHand === 1) { // CPUがチョキ
+	//result.textContent = "あなた：グー　相手：チョキ　→あなたの勝ち！";
+	//}else { // CPUがパー
+    //result.textContent = "あなた；グー　相手：パー　→あなたの負け！";
+	//}
+	//console.log("プレイヤー:", plHand, "CPU:", cpuHand);
 
 } else if (plHand === 1) { // プレイヤーがチョキ
-  if (cpuHand === 2) { // CPUがパー
-    result.textContent = "あなた：チョキ　相手：パー　→あなたの勝ち！";
-  } else { // CPUがグー
-    result.textContent = "あなた：チョキ　相手：グー　→あなたの負け！";
-  }
-  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+	if (cpuHand === 1) {
+		result.textContent = "あなた：グー　相手：グー　あいこ！";
+	} else if (cpuHand === 2){
+		result.textContent = "あなた：チョキ　相手：パー　→あなたの勝ち！";
+	} else {
+		result.textContent = "あなた：チョキ　相手：グー　→あなたの負け！";
+	}
+	// if (plHand === 1) { // プレイヤーがパー
+	// 	result.textContent = "あなた：チョキ　相手：パー　→あなたの勝ち！";
+	// }else { // CPUがグー
+	// 	result.textContent = "あなた：チョキ　相手：グー　→あなたの負け！";
+	// }
+	// //console.log("プレイヤー:", plHand, "CPU:", cpuHand);
 
 } else { // プレイヤーがパー
-  if (cpuHand === 0) { // CPUがグー
-    result.textContent = "あなた：パー　相手：グー　→あなたの勝ち！";
-  } else { // CPUがチョキ
-    result.textContent = "あなた：パー　相手：チョキ　→あなたの負け！";
-  }
-  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+	if (cpuHand === 2) {
+		result.textContent = "あなた：パー　相手：パー　あいこ！";
+	} else if (cpuHand === 0){
+		result.textContent = "あなた：パー　相手：グー　→あなたの勝ち！";
+	} else {
+		result.textContent = "あなた：パー　相手：チョキ　→あなたの負け！";
+	}
 }
-
-	//result.textContent = 
+});
+	// } else { // プレイヤーがパー
+	//   if (cpuHand === 0) { // CPUがグー
+	//     result.textContent = "→あなたの勝ち！";
+	//   } else { // CPUがチョキ
+	//     result.textContent = "→あなたの負け！";
+	//   }
+	//   console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+	// }
 
 	//result.innerHTML = btn.textContent
 	//result.innerHTML = result.textContent
-});
 </script>
 </body>
 </html>
