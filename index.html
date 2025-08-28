@@ -141,10 +141,62 @@
 
 <script>
 const btnGroup = document.querySelector('.button-group');
+const result = document.getElementById('result');
+
 btnGroup.addEventListener('click', (e) => {
 	const btn = e.target.closest('button');
 	//if (!btn) return;
-	alert('成功');
+	//alert('成功');
+
+
+// グー=0, チョキ=1, パー=2
+let plHand;
+if (btn.textContent.includes("グー")) {
+	plHand = 0;
+
+} else if (btn.textContent.includes("チョキ") ){
+	plHand = 1;
+} else {
+	plHand = 2;
+}
+
+// じゃんけんCPU
+const cpuHand = Math.floor(Math.random() * 3);
+
+// 勝敗判定
+if (plHand === cpuHand) {
+  result.textContent = "あいこ！";
+  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+
+} else if (plHand === 0) { // プレイヤーがグー
+  if (cpuHand === 1) { // CPUがチョキ
+    result.textContent = "あなた：グー　相手：チョキ　→あなたの勝ち！";
+  } else { // CPUがパー
+    result.textContent = "あなた；グー　相手：パー　→あなたの負け！";
+  }
+  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+
+} else if (plHand === 1) { // プレイヤーがチョキ
+  if (cpuHand === 2) { // CPUがパー
+    result.textContent = "あなた：チョキ　相手：パー　→あなたの勝ち！";
+  } else { // CPUがグー
+    result.textContent = "あなた：チョキ　相手：グー　→あなたの負け！";
+  }
+  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+
+} else { // プレイヤーがパー
+  if (cpuHand === 0) { // CPUがグー
+    result.textContent = "あなた：パー　相手：グー　→あなたの勝ち！";
+  } else { // CPUがチョキ
+    result.textContent = "あなた：パー　相手：チョキ　→あなたの負け！";
+  }
+  console.log("プレイヤー:", plHand, "CPU:", cpuHand);
+}
+
+	//result.textContent = 
+
+	//result.innerHTML = btn.textContent
+	//result.innerHTML = result.textContent
 });
 </script>
 </body>
