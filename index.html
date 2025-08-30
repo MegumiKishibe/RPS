@@ -149,8 +149,10 @@ let cheatOn = false;//初期設定はチートOFF
 cheat.addEventListener('change', (e) => {
 	cheatOn = e.target.checked;
 	if (e.target.checked) {
+		document.body.classList.add('cheat-active');
 		console.log('チートモードON')
 	} else {
+		document.body.classList.remove('cheat-active');
 		console.log('チートモードOFF')
 	}
 });
@@ -207,15 +209,15 @@ if (plHand === 0) {
 	if (cpuHand === 0) {
 		result.textContent ="あなた：グー　相手：グー　→あいこ！";
 		outcome = 0;
-		console.log("debug:",result.textContent);
+		//console.log("debug:",result.textContent);
 	} else if (cpuHand === 1){
     result.textContent = "あなた：グー　相手：チョキ　→あなたの勝ち！";
 	outcome = 1;
-	console.log("debug:",result.textContent);
+	//console.log("debug:",result.textContent);
 	} else {
     result.textContent = "あなた；グー　相手：パー　→あなたの負け！";
 	outcome = 2;
-	console.log("debug:",result.textContent);
+	//console.log("debug:",result.textContent);
 
 	}
 //if (plHand === cpuHand) {
@@ -233,17 +235,17 @@ if (plHand === 0) {
 	if (cpuHand === 1) {
 		result.textContent = "あなた：グー　相手：グー　あいこ！";
 		outcome = 0;
-		console.log("debug:",result.textContent);
+		//console.log("debug:",result.textContent);
 
 	} else if (cpuHand === 2){
 		result.textContent = "あなた：チョキ　相手：パー　→あなたの勝ち！";
 		outcome = 1;
-		console.log("debug:",result.textContent);
+		//console.log("debug:",result.textContent);
 
 	} else {
 		result.textContent = "あなた：チョキ　相手：グー　→あなたの負け！";
 		outcome = 2;
-		console.log("debug:",result.textContent);
+		//console.log("debug:",result.textContent);
 
 	}
 	// if (plHand === 1) { // プレイヤーがパー
@@ -257,15 +259,15 @@ if (plHand === 0) {
 	if (cpuHand === 2) {
 		result.textContent = "あなた：パー　相手：パー　あいこ！";
 		outcome = 0;
-		console.log("debug:",result.textContent);
+		//console.log("debug:",result.textContent);
 	} else if (cpuHand === 0){
 		result.textContent = "あなた：パー　相手：グー　→あなたの勝ち！";
 		outcome = 1;
-		console.log("debug:",result.textContent);
+		//console.log("debug:",result.textContent);
 	} else {
 		result.textContent = "あなた：パー　相手：チョキ　→あなたの負け！";
 		outcome = 2;
-		console.log("debug:",result.textContent);
+		//console.log("debug:",result.textContent);
 	}
 }
 if (outcome === 0) {
