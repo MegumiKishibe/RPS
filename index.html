@@ -138,161 +138,76 @@
 <!-- 勝敗の結果を表示するエリア -->
 <!-- JavaScriptでここにテキストを表示するには getElementById('result') を使います -->
 <p id="result"></p>
-
 <script>
 const btnGroup = document.querySelector('.button-group');
 const result = document.getElementById('result');
 const cheat = document.getElementById('cheatMode');
 
-let cheatOn = false;//初期設定はチートOFF
+let cheatOn = false; // 初期設定はチートOFF
+
+function getPlHandFromBtn(btn) {
+	const text = btn.textContent;
+	if (text.includes('グー')) return 0;
+	if (text.includes('チョキ')) return 1;//前の行でreturn→次の始まりはifでいい。
+	return 2; //パー
+}
+
+//------cpuの手とチートONでCpuが必ず負ける関数
+function getCpuHand(plHand, cheatOn) {
+	//チートOFFでランダム出力
+	if (!cheatOn) {
+		return Math.floor(Math.random() * 3);
+	}
+	//チートONでCpuが必ず負ける
+	return (plHand + 1) % 3;
+}
+
+//------勝敗あいこ０、勝ち１、負け２を判定する関数
+function judgeOutcome(plHand, cpuHand) {
+	if (plHand === cpuHand) return 0;//あいこ
+	if (plHand === 0 && cpuHand === 1) return 1;//pグー、cチョキ
+	if (plHand === 1 && cpuHand === 2) return 1;//pチョキ、cパー
+	if (plHand === 2 && cpuHand === 0) return 1;//pパー、cグー
+	else return 2;//それ以外は負け
+}
+//--------------Event--------------
 
 cheat.addEventListener('change', (e) => {
-	cheatOn = e.target.checked;
-	if (e.target.checked) {
-		document.body.classList.add('cheat-active');
-		console.log('チートモードON')
-	} else {
-		document.body.classList.remove('cheat-active');
-		console.log('チートモードOFF')
-	}
+cheatOn = e.target.checked;
+document.body.classList.toggle('cheat-active');
+
 });
 
 btnGroup.addEventListener('click', (e) => {
-	const btn = e.target.closest('button');
-	if (!btn) return;
-	//alert('成功');
+const btn = e.target.closest('button');
+if (!btn) return;
 
-// グー=0, チョキ=1, パー=2
-let plHand;
-if (btn.textContent.includes("グー")) {
-	plHand = 0;
+const plHand = getPlHandFromBtn(btn);
+const cpuHand = getCpuHand(plHand, cheatOn);
+const outcome = judgeOutcome(plHand, cpuHand);
 
-} else if (btn.textContent.includes("チョキ") ){
-	plHand = 1;
-} else {
-	plHand = 2;
-}
+//----結果表示用text代入----
+const textHands = ['グー','チョキ','パー'];
+const textOutcome = ['→あいこ！','→あなたの勝ち！','→あなたの負け！'];
 
-// じゃんけんCPU
-//const cpuHand = Math.floor(Math.random() * 3);
-let cpuHand;
-//チートON/OFFの条件分岐
-if (cheatOn) {
-	cpuHand = (plHand + 1) % 3;
-} else {
-	cpuHand = Math.floor(Math.random() * 3);
-}
-//勝敗に応じて色を替える
+//---結果画面表示
+result.textContent = 'あなた：' + textHands[plHand] + '相手：' + textHands[cpuHand] + '' + textOutcome[outcome]
+
+// 結果に応じて色を変える
 let textcolor;
-
-// if (result.textContent.includes("あいこ")) {
-// 		textcolor = "draw";
-// 	} else if (result.textContent.includes("勝ち")) {
-// 		textcolor = "win";
-// 	} else if (result.textContent.includes("勝ち")) {
-// 		textcolor = "lose";
-// 	} else {
-// 		cls = null;
-// 	}
-
-// result.classList.remove("draw","win","lose");
-// result.classList.add(textcolor);//textcolor変数を代入に変更
-//result.classList.add("draw");
-//result.classList.add("win");
-//result.classList.add("lose");
-
-//結果表示変数outcome設定
-let outcome;//あいこ０、勝ち１、負け２
-// グー=0, チョキ=1, パー=2
-// 勝敗判定
-if (plHand === 0) {
-	if (cpuHand === 0) {
-		result.textContent ="あなた：グー　相手：グー　→あいこ！";
-		outcome = 0;
-		//console.log("debug:",result.textContent);
-	} else if (cpuHand === 1){
-    result.textContent = "あなた：グー　相手：チョキ　→あなたの勝ち！";
-	outcome = 1;
-	//console.log("debug:",result.textContent);
-	} else {
-    result.textContent = "あなた；グー　相手：パー　→あなたの負け！";
-	outcome = 2;
-	//console.log("debug:",result.textContent);
-
-	}
-//if (plHand === cpuHand) {
-	//result.textContent = "あいこ！";
-	//console.log("プレイヤー:", plHand, "CPU:", cpuHand);
-	//} else if (plHand === 0) { // プレイヤーがグー
-	//if (cpuHand === 1) { // CPUがチョキ
-	//result.textContent = "あなた：グー　相手：チョキ　→あなたの勝ち！";
-	//}else { // CPUがパー
-    //result.textContent = "あなた；グー　相手：パー　→あなたの負け！";
-	//}
-	//console.log("プレイヤー:", plHand, "CPU:", cpuHand);
-
-} else if (plHand === 1) { // プレイヤーがチョキ
-	if (cpuHand === 1) {
-		result.textContent = "あなた：グー　相手：グー　あいこ！";
-		outcome = 0;
-		//console.log("debug:",result.textContent);
-
-	} else if (cpuHand === 2){
-		result.textContent = "あなた：チョキ　相手：パー　→あなたの勝ち！";
-		outcome = 1;
-		//console.log("debug:",result.textContent);
-
-	} else {
-		result.textContent = "あなた：チョキ　相手：グー　→あなたの負け！";
-		outcome = 2;
-		//console.log("debug:",result.textContent);
-
-	}
-	// if (plHand === 1) { // プレイヤーがパー
-	// 	result.textContent = "あなた：チョキ　相手：パー　→あなたの勝ち！";
-	// }else { // CPUがグー
-	// 	result.textContent = "あなた：チョキ　相手：グー　→あなたの負け！";
-	// }
-	// //console.log("プレイヤー:", plHand, "CPU:", cpuHand);
-
-} else { // プレイヤーがパー
-	if (cpuHand === 2) {
-		result.textContent = "あなた：パー　相手：パー　あいこ！";
-		outcome = 0;
-		//console.log("debug:",result.textContent);
-	} else if (cpuHand === 0){
-		result.textContent = "あなた：パー　相手：グー　→あなたの勝ち！";
-		outcome = 1;
-		//console.log("debug:",result.textContent);
-	} else {
-		result.textContent = "あなた：パー　相手：チョキ　→あなたの負け！";
-		outcome = 2;
-		//console.log("debug:",result.textContent);
-	}
-}
 if (outcome === 0) {
-	textcolor = "draw";
+textcolor = "draw";
 } else if (outcome === 1) {
-	textcolor = "win";
+textcolor = "win";
 } else {
-	textcolor = "lose";
+textcolor = "lose";
 }
 
-result.classList.remove("draw","win","lose");
-result.classList.add(textcolor);//textcolor変数を代入に変更
+result.classList.remove("draw", "win", "lose");
+result.classList.add(textcolor);
 
 });
-	// } else { // プレイヤーがパー
-	//   if (cpuHand === 0) { // CPUがグー
-	//     result.textContent = "→あなたの勝ち！";
-	//   } else { // CPUがチョキ
-	//     result.textContent = "→あなたの負け！";
-	//   }
-	//   console.log("プレイヤー:", plHand, "CPU:", cpuHand);
-	// }
-
-	//result.innerHTML = btn.textContent
-	//result.innerHTML = result.textContent
 </script>
+
 </body>
 </html>
