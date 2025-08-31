@@ -91,3 +91,54 @@ Since: 2025-08-26
 - **Docs**: ブログ記事の実装ログをもとに CHANGELOG を整備。  
   `btn === null` によるエラー原因と対策も明文化。
 
+## [2025-08-31] じゃんけんゲーム 関数化リファクタ v1.1
+Since: 2025-08-26
+
+### Refactor
+- ロジックを小さな関数へ分割し責務を分離：
+  - `getPlHandFromBtn(btn)`：ボタンテキスト → 0/1/2
+  - `getCpuHand(plHand, cheatOn)`：チートONで必ず負ける手／OFFでランダム
+  - `judgeOutcome(plHand, cpuHand)`：0=あいこ / 1=勝ち / 2=負け を返す
+- 関数定義 → イベントハンドラーの順に**配置換え**（宣言が先、呼び出しが後）。
+- 勝敗後に色更新を行うヘルパーへ処理を集約（`classList.remove → add`）。
+
+### Added
+- 表示用テンプレ配列を導入して文言を一本化：
+  - `['グー','チョキ','パー']`、`['→あいこ！','→あなたの勝ち！','→あなたの負け！']`
+- `cheat` 切替時のクラス操作に `classList.toggle('cheat-active', cheatOn)`（第2引数で冪等適用）。
+
+### Changed
+- クリック時の処理フローを **(1)手の取得 → (2)CPU決定 → (3)勝敗判定 → (4)結果表示 → (5)色更新** に整理。
+- 文字色は `outcome` 数値ベースで決定（`includes` 依存を排除）。
+
+### Fixed
+- ドキュメント上の表記ゆれを修正：`judgeCpuHand` → **`judgeOutcome`**（関数名）。
+
+### Notes
+- 可読性重視で `getCpuHand` は初心者向けに if/else 版で記述：
+  ```js
+  function getCpuHand(plHand, cheatOn) {
+    if (!cheatOn) {
+      return Math.floor(Math.random() * 3); // 0,1,2 を等確率
+    }
+    return (plHand + 1) % 3; // プレイヤーに必ず負ける手
+  }
+  ```
+
+// 結果テキスト
+```js
+const textHands   = ['グー','チョキ','パー'];
+const textOutcome = ['→あいこ！','→あなたの勝ち！','→あなたの負け！'];
+
+result.textContent =
+  'あなた：' + textHands[plHand] + '　相手：' + textHands[cpuHand] + '　' + textOutcome[outcome];
+
+// 文字色（outcome: 0/1/2 → draw/win/lose）
+let textcolor;
+if (outcome === 0)      textcolor = 'draw';
+else if (outcome === 1) textcolor = 'win';
+else                    textcolor = 'lose';
+
+result.classList.remove('draw','win','lose');
+result.classList.add(textcolor);
+```
